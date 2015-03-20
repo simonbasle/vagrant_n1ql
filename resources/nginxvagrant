@@ -1,0 +1,18 @@
+server {
+	listen 80;
+	server_name _;
+	root /var/www;
+	index welcome.html;
+
+	location / {
+		try_files $uri /welcome.html;
+	}
+
+	location /maven {
+		autoindex on;
+	}
+
+	location /sources {
+		autoindex on;
+	}
+}
