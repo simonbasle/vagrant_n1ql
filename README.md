@@ -10,6 +10,12 @@ The VM also serves static HTML pages with instructions, zip files to bootstrap t
 ##How to Use
 You'll just need to customize the `Vagrantfile` and at least customize the `ip_base` and decide to activate `public_lan` or not (probably yes).
 
+After first provisionning, you'll have to execute the install procedure by navigating to `http://VM_IP:8091`. Make sure to create `default` bucket and load the `beer-sample` sample.
+
+Then the solution for java join query expects some favorite brewery documents, with keys like `favorite_`*brewery_id* and a `stars` int value. For example, create a `favorite_abbaye_de_leffe` document and put the following content:
+
+    { "stars": 5, "comment": "very good beers" }
+
 ##Contents
 
 `unshared` contains markdown sources for static pages.
