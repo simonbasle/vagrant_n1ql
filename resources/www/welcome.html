@@ -355,7 +355,11 @@ sup {
 
 <p>After that, you can try to use the DSL to create a statement with a WHERE clause (start with <code>select(x("SOME FIELD"))</code>). (<a href="solJavaPredicate.html">solution</a>)</p>
 
-<p>Then maybe try to do a join? I have defined some favorite breweries in <code>default</code> bucket, their keys are the concatenation of "<code>favorite_</code>" and the <code>brewery_id</code>. (<a href="solJavaJoin.html">solution</a>)</p>
+<p>Then maybe try to do a join? I have defined some favorite breweries in <code>default</code> bucket, their keys are the concatenation of "<code>favorite_</code>" and the <code>brewery_id</code>.</p>
+
+<p>So select some beers, using their <code>brewery_id</code> foreign key join them onto the favorite documents. You can construct the key in N1QL using the <code>to_string()</code> function and the <code>||</code> concatenation operator.</p>
+
+<p>(<a href="solJavaJoin.html">solution</a>)</p>
 
 <h2>Querying in .Net</h2>
 

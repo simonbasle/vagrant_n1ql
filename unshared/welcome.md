@@ -43,7 +43,11 @@ Once you've obtained a reference to the `Cluster` and `Bucket`, you can start qu
 
 After that, you can try to use the DSL to create a statement with a WHERE clause (start with `select(x("SOME FIELD"))`). ([solution](solJavaPredicate.html))
 
-Then maybe try to do a join? I have defined some favorite breweries in `default` bucket, their keys are the concatenation of "`favorite_`" and the `brewery_id`. ([solution](solJavaJoin.html))
+Then maybe try to do a join? I have defined some favorite breweries in `default` bucket, their keys are the concatenation of "`favorite_`" and the `brewery_id`. 
+
+So select some beers, using their `brewery_id` foreign key join them onto the favorite documents. You can construct the key in N1QL using the `to_string()` function and the `||` concatenation operator.
+
+([solution](solJavaJoin.html))
 
 ##Querying in .Net
 **TODO**
