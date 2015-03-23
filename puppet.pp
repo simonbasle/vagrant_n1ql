@@ -2,6 +2,18 @@
 # Install and Run Couchbase Server
 # ===
 
+file { "vagrantmount1":
+    path => "/vagrant/prov",
+    ensure => "directory",
+    before => Exec["couchbase-server-source"]
+}
+
+file { "vagrantmount2":
+    path => "/vagrant/resources",
+    ensure => "directory",
+    before => Exec["couchbase-server-source"]
+}
+
 $fullUrl = $cburl
 $splitter = split($fullUrl, '/')
 $filename = $splitter[-1]
@@ -18,22 +30,26 @@ exec { "couchbase-server-source":
 $n1qlsplitter = split($n1qlurl, '/')
 $n1qlarchive = $n1qlsplitter[-1]
 
-# Download N1QL DP4 and extract
-exec { "couchbase-n1ql-dp4":
-    command => "/usr/bin/wget $n1qlurl && tar -zxf $n1qlarchive",
+
+exec { "puppet-setpassword":
+    command => "/usr/bin/apt-get install make && /opt/vagrant_ruby/bin/gem install ruby-shadow --no-ri",
     cwd => "/vagrant/prov",
-    creates => "/vagrant/prov/cbq-dp4",
-    before => File['cbq-alias'],
-    timeout => 1200
+    timeout => 1200,
+    before => File["cbqhome"]
 }
 
+file { "cbqhome":
+    path => "/home/cbq",
+    before => User["cbq"]
+}
 
-file { "cbq-alias":
-    path => "/home/vagrant/.bash_aliases",
-    owner => "vagrant",
-    ensure => "present",
-    content => "alias cbq='/vagrant/prov/cbq-dp4/cbq -engine=http://localhost:8093/'",
-    before => Service['couchbase-server']
+user { "cbq":
+    name => "cbq",
+    ensure => 'present',
+    managehome => true,
+    shell => "/opt/couchbase/bin/cbq",
+    password => '$1$Ksq1VeaW$l43xXLM6w8bRQKcnk4fEp1', #requires gem ruby-shadow to edit shadowfile
+    require => Package["couchbase-server"]
 }
 
 # Update the System
