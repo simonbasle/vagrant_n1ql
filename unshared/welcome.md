@@ -78,5 +78,8 @@ Use this [skeleton](sources/netSkeleton.zip) application and follow the TODO ins
 You will have to do a simple query ([solution](solNetSimple.html)), a query with WHERE clause ([solution](solNetPredicate.html)) and finally a join query ([solution](solNetJoin.html)).
 
 ##<a id="node"></a>Querying in Node.js
-**TODO**
-Use this [skeleton](sources/nodeSkeleton.zip) application.
+Use this [skeleton](sources/nodeSkeleton.zip) application and edit `routes/query.js`. Replace the occurrences of the IP adress by the correct one for the hands on.
+
+You then just have to fill the `queryX` strings at the top.
+
+You will have to do a simple query ([solution](solNodeSimple.html)), a query with WHERE clause ([solution](solNodePredicate.html)) and finally a join query ([solution](solNodeJoin.html)).

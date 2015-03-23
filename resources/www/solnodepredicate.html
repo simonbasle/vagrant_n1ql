@@ -302,107 +302,17 @@ sup {
 	}
 }
 </style>
-<title>N1QL Demo Server - Welcome!</title>
+<title>Node.JS Solution</title>
 
 </head>
 <body>
-<h1>N1QL Demo Server - Welcome!</h1>
+<h1>Node.JS Solution</h1>
 
-<h2>Querying in the Command Line</h2>
+<h2>Predicate Query</h2>
 
-<p>You can use cbq to query the N1QL server via the command line.</p>
+<p><strong>As query2 you should have:</strong></p>
 
-<ol>
-<li>Connect to this server via ssh: <code>ssh vagrant@SERVERIP</code>, password is <code>vagrant</code>.</li>
-<li>Enter CBQ client: <code>cbq</code></li>
-<li>Query away! Example: <code>SELECT * FROM `beer-sample` LIMIT 10;</code></li>
-</ol>
-
-
-<h2>The Queries</h2>
-
-<p>The idea of this tutorial is to make you use your favorite language (among Java, .Net and Node.js) to play with N1QL.</p>
-
-<p>We'll work with 3 queries on the beer-sample bucket:</p>
-
-<ul>
-<li>A simple query to select the <code>name</code> of <code>10</code> <code>beer</code>s, in alphabetical order</li>
-<li>An intermediate query to correct the fact that the first one would also show brewery names (by making sure of the correct <code>type</code>)</li>
-<li>An advanced query that joins beers to the default bucket, in which some breweries have been marked as favorite. The joining key is constructed by taking the beer's <code>brewery_id</code> and prefixing it with <code>favorite_</code>, giving a document id in <code>default</code> bucket.</li>
-</ul>
-
-
-<p><strong>ToC</strong></p>
-
-<ul>
-<li><a href="#java">Querying in Java</a></li>
-<li><a href="#net">Querying in .Net</a></li>
-<li><a href="#node">Querying in Node.js</a></li>
-</ul>
-
-
-<h2><a id="java"></a>Querying in Java</h2>
-
-<p>This server is also a Maven repository. You can use it to retrieve version 2.1.2-cblive of the Java SDK with the following snippet inside <code>pom.xml</code>:</p>
-
-<pre><code>&lt;repositories&gt;
-    &lt;repository&gt;
-      &lt;id&gt;couchbase-cblive&lt;/id&gt;
-      &lt;name&gt;couchbase repo for cblive&lt;/name&gt;
-      &lt;url&gt;http://192.168.5.111/maven&lt;/url&gt;
-      &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
-    &lt;/repository&gt;
-  &lt;/repositories&gt;
-
-  &lt;dependencies&gt;
-    &lt;dependency&gt;
-      &lt;groupId&gt;com.couchbase.client&lt;/groupId&gt;
-      &lt;artifactId&gt;java-client&lt;/artifactId&gt;
-      &lt;version&gt;2.1.2-cblive&lt;/version&gt;
-    &lt;/dependency&gt;
-    &lt;!-- LOGGING --&gt;
-    &lt;dependency&gt;
-      &lt;groupId&gt;log4j&lt;/groupId&gt;
-      &lt;artifactId&gt;log4j&lt;/artifactId&gt;
-      &lt;version&gt;1.2.17&lt;/version&gt;
-    &lt;/dependency&gt;
-  &lt;/dependencies&gt;
+<pre><code>var query2 = 'SELECT name FROM `beer-sample` WHERE type = "beer" ORDER BY name LIMIT 10';
 </code></pre>
-
-<p>You can use this <a href="sources/javaSkeleton.zip">skeleton</a> for a Maven application.</p>
-
-<p>Once you've obtained a reference to the <code>Cluster</code> and <code>Bucket</code>, you can start querying using <code>bucket.query(Query.simple("A N1QL STATEMENT")))</code>. Try it out! (<a href="solJavaSimple.html">solution</a>)</p>
-
-<p>After that, you can try to use the DSL to create a statement with a WHERE clause (start with <code>select(x("SOME FIELD"))</code>). (<a href="solJavaPredicate.html">solution</a>)</p>
-
-<p>Then maybe try to do a join? I have defined some favorite breweries in <code>default</code> bucket, their keys are the concatenation of "<code>favorite_</code>" and the <code>brewery_id</code>.</p>
-
-<p>So select some beers, using their <code>brewery_id</code> foreign key join them onto the favorite documents. You can construct the key in N1QL using the <code>to_string()</code> function and the <code>||</code> concatenation operator.
-(<a href="solJavaJoin.html">solution</a>)</p>
-
-<h2><a id="net"></a>Querying in .Net</h2>
-
-<p>The following nuget packages are necessary:</p>
-
-<pre><code>  &lt;package id="Common.Logging" version="3.0.0" targetFramework="net45" /&gt;
-  &lt;package id="Common.Logging.Core" version="3.0.0" targetFramework="net45" /&gt;
-  &lt;package id="Common.Logging.Log4Net1213" version="3.0.0" targetFramework="net45" /&gt;
-  &lt;package id="CouchbaseNetClient" version="2.0.3" targetFramework="net45" /&gt;
-  &lt;package id="Newtonsoft.Json" version="6.0.8" targetFramework="net45" /&gt;
-</code></pre>
-
-<p>Use this <a href="sources/netSkeleton.zip">skeleton</a> application and follow the TODO instructions after importing the solution in Visual Studio.</p>
-
-<p><strong>Important</strong>: don't forget to correct the IP address in <code>App.config</code>.</p>
-
-<p>You will have to do a simple query (<a href="solNetSimple.html">solution</a>), a query with WHERE clause (<a href="solNetPredicate.html">solution</a>) and finally a join query (<a href="solNetJoin.html">solution</a>).</p>
-
-<h2><a id="node"></a>Querying in Node.js</h2>
-
-<p>Use this <a href="sources/nodeSkeleton.zip">skeleton</a> application and edit <code>routes/query.js</code>. Replace the occurrences of the IP adress by the correct one for the hands on.</p>
-
-<p>You then just have to fill the <code>queryX</code> strings at the top.</p>
-
-<p>You will have to do a simple query (<a href="solNodeSimple.html">solution</a>), a query with WHERE clause (<a href="solNodePredicate.html">solution</a>) and finally a join query (<a href="solNodeJoin.html">solution</a>).</p>
 </body>
 </html>
