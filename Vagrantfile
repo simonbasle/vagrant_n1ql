@@ -11,6 +11,7 @@ dhcp = true
 # Name of the host endpoint to serve as bridge to local network
 #  (if not found vagrant will ask the user for each node)
 #default_bridge = "en0: Wi-Fi (AirPort)"
+default_bridge = "ask"
 
 #cluster sizing parameters
 default_number_of_nodes = 1
