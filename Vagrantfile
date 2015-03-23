@@ -2,13 +2,15 @@ begin
 ### Variable declarations - FEEL FREE TO EDIT THESE ###
 # Base for IP. %d replaced by node number, eg "192.168.1.10%d" to get 101, 102, ...
 #  (be careful of potential ip collisions if public_lan=true !)
-ip_base = "192.168.5.11%d"
+ip_base = "192.168.1.11%d"
 #allow bridging?
 public_lan = false
+#if bridged, use dhcp or ip_base?
+dhcp = true
 
 # Name of the host endpoint to serve as bridge to local network
 #  (if not found vagrant will ask the user for each node)
-default_bridge = "en0: Wi-Fi (AirPort)"
+#default_bridge = "en0: Wi-Fi (AirPort)"
 
 #cluster sizing parameters
 default_number_of_nodes = 1
@@ -125,8 +127,13 @@ Vagrant.configure("2") do |config|
     config.vm.define "node#{num}" do |node|
       node.vm.box = box_name
       if (public_lan)
-       node.vm.network :public_network, :bridge => default_bridge, :ip =>  ip_base % num
-       puts "Public LAN ip : #{ip_base % num}"
+          if (dhcp)
+              node.vm.network :public_network, :bridge => default_bridge
+              puts "Public LAN ip via DHCP, vagrant ssh to the node and get IP via ifconfig"
+          else
+              node.vm.network :public_network, :bridge => default_bridge, :ip =>  ip_base % num
+              puts "Public LAN ip : #{ip_base % num}"
+          end
       else
         node.vm.network :private_network, :ip => ip_base % num
         puts "Private network (host only) ip : #{ip_base % num}"
@@ -141,7 +148,11 @@ Vagrant.configure("2") do |config|
   end
 
   if ARGV[0] == "up" && !ARGV[1]
-    puts "\e[32m=== Upping #{num_nodes} node(s) on IPs #{ip_base.sub('%d','')}{1..#{num_nodes}} ==="
+      if (public_lan && dhcp)
+          puts "\e[32m=== Upping #{num_nodes} node(s) with DHCP enabled ==="
+    else
+        puts "\e[32m=== Upping #{num_nodes} node(s) on IPs #{ip_base.sub('%d','')}{1..#{num_nodes}} ==="
+    end
   end
 
 end
